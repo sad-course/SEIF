@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from .forms import RequestEventForm
 
 
 # Create your views here.
@@ -20,16 +22,26 @@ def analytics_home(request):
 
 def analytics_event_detail(request):
     return render(request, "management/analytics_event_detail.html")
-  
+
 
 def create_event(request):
     return render(request, "management/create_event.html")
 
-  
+
 def request_create_event(request):
-    return render(request, "management/request_create_event.html")
-  
-  
+
+    if request.method == "POST":
+        form = RequestEventForm(request.POST)
+
+        if form.is_valid():
+            data = form.cleaned_data()
+            # criar requisição aqui
+            return HttpResponse(data)
+    else:
+        form = RequestEventForm()
+    return render(request, "management/request_create_event.html", {"form": form})
+
+
 def event_publish_requests(request):
     return render(request, "management/organizer_event_submit_requests.html")
 
