@@ -17,12 +17,23 @@
     </div>
 </div>
 
-<div class="bg-gray-200 flex items-center mt-11  justify-center min-h-screen">
+<div class="bg-gray-200 flex items-center mt-16 justify-center min-h-screen">
     <div class="p-8 max-w-3xl w-full ml-8">
         <h1 class="text-2xl font-semibold text-green-900 mb-6">Quer publicar um evento?</h1>
 
-        <form action = "{% url 'event_publish_request' %}" method="post" id = "request_event_form">
+        <form action = "{% url 'request_create_event' %}" method="post" id = "request_event_form">
             {% csrf_token %}
+
+            {% if form.errors %}
+                <div>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            {% include 'partials/components/badge_message.html' with status='warning' message=error %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             <!-- Local da Evento -->
             <div class="mb-4">
                 <label for="{{ form.local.id }}" class="block text-gray-600 font-medium mb-2">Local da Evento:</label>
@@ -59,11 +70,11 @@
                 <button type="button" class="w-[190px] min-h-14 bg-red-700 text-center rounded-md text-base font-semibold text-gray-100 hover:bg-red-600">
                     Cancelar
                 </button>
-                <a href="{% url 'event_publish_request' %}">
-                    <button class="btn-default">
+
+                <button type ="submit" class="btn-default">
                         Submeter
-                    </button>
-                </a>
+                </button>
+
             </div>
         </form>
     </div>

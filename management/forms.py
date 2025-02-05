@@ -1,11 +1,12 @@
 from django import forms
+from django.core.validators import ValidationError
 
 
 class RequestEventForm(forms.Form):
     local = forms.CharField(
         label="local",
         max_length=100,
-        min_length=10,
+        min_length=5,
         widget=forms.TextInput(attrs={"placeholder": "Local do evento"}),
     )
     cargo = forms.CharField(
@@ -42,3 +43,9 @@ class RequestEventForm(forms.Form):
                     + "focus:border-green-800 focus:ring-green-800"
                 }
             )
+
+    def clean_local(self):
+        local = self.cleaned_data.get("local")
+        if local != "IFRNN":
+            raise ValidationError("Erro")
+        return local

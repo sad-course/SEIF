@@ -34,9 +34,9 @@ def request_create_event(request):
         form = RequestEventForm(request.POST)
 
         if form.is_valid():
-            data = form.cleaned_data()
+            data = form.cleaned_data
             # criar requisição aqui
-            return HttpResponse(data)
+            return HttpResponse(data["local"])
     else:
         form = RequestEventForm()
     return render(request, "management/request_create_event.html", {"form": form})
